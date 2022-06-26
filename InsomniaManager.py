@@ -240,4 +240,6 @@ class InsomniaManager:
         }
 
     def generate_insomnia_file(self):
-        FileHandler().save_json_file(f"Insomnia_{datetime.date.today()}.json", self.to_json())
+        file_name = f"Insomnia_{datetime.date.today()}.json"
+        FileHandler().save_json_file(file_name, self.to_json())
+        print(f"{file_name} was created in '/' directory.")
