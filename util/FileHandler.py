@@ -1,9 +1,11 @@
 import json
 
+from util import Utility
+
 
 class Paths:
-    SETTINGS = "settings.json"
-    NEW_IMPORTS = "new_bookmarks.json"
+    SETTINGS = "data\\settings.json"
+    NEW_IMPORTS = "data\\new_bookmarks.json"
 
 
 class FileHandler:
@@ -29,10 +31,16 @@ class FileHandler:
         return self.__read_json(self.paths.NEW_IMPORTS)
 
     def get_bookmarks_path(self):
-        return self.get_settings()["bookmarks_path"]
+        path = Utility.get_default_browser_bookmarks_path()
+        if not path:
+            print("Default browser not found. Defaulting to bookmarks path provided in 'data/settings.json'.")
+            path = self.get_settings()["bookmarks_path"]
+            if not path:
+                raise Exception("Please provide a path in 'data/settings.json' to your 'Bookmarks' file. Field: bookmarks_path.")
+        return path
 
     def get_bookmarks_chrome(self):
-        return self.__read_json(self.get_settings()["bookmarks_path"])
+        return self.__read_json(self.bookmarks_path)
 
     def save_json_file(self, file_name, json_object):
         file = open(file_name, "w")
