@@ -5,6 +5,7 @@ import string
 from time import time
 
 time_now = int(time())
+app_data_path = "\\".join(os.getenv('APPDATA').split("\\")[:-1])
 
 
 def generate_random_alphanumeric_string(number_of_characters):
@@ -13,7 +14,6 @@ def generate_random_alphanumeric_string(number_of_characters):
 
 def get_default_browser_bookmarks_path():
     osPlatform = platform.system()
-    app_data_path = "\\".join(os.getenv('APPDATA').split("\\")[:-1])
 
     if osPlatform == 'Windows':
         # Find the default browser by interrogating the registry

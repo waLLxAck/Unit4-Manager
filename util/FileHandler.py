@@ -1,4 +1,5 @@
 import json
+import shutil
 
 from util import Utility
 
@@ -48,3 +49,13 @@ class FileHandler:
 
     def save_changes(self, chrome_bookmarks):
         self.save_json_file(self.bookmarks_path, chrome_bookmarks)
+
+    def distribute_bookmarks_from_default_to_other_browsers(self):
+        for bookmark_path in self.get_browser_bookmarks_paths():
+            shutil.copy2(self.bookmarks_path, bookmark_path)
+            print(f"Bookmarks copied from '{self.bookmarks_path}' to '{bookmark_path}'.")
+
+    def get_browser_bookmarks_paths(self):   # todo make dynamic -> try to retrieve all Bookmarks in try, except and add to list
+        paths = []
+        paths.append(f"{Utility.app_data_path}\\Local\\Google\\Chrome\\User Data\\Default\\Bookmarks")
+        return paths
