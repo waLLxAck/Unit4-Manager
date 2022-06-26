@@ -2,7 +2,6 @@ import json
 
 from BookmarkManager import BookmarkManager
 from InsomniaManager import InsomniaManager
-from util.FileHandler import FileHandler
 
 
 class StandardFileNames:
@@ -63,7 +62,6 @@ class Project:
             self.__environments.append(Environment.from_json(environment))
         self.__project_name = project_name
         self.__swagger_api = swagger_api
-        self.__file_handler = FileHandler()
         self.bm = BookmarkManager()
         self.names = StandardFileNames()
         self.__project_short_name = self.get_project_short_name()
@@ -107,7 +105,6 @@ class Project:
         project_folder = self.bm.create_folder(unit4_projects_folder, self.__project_name)
         self.__create_swagger_bookmark(project_folder)
         self.__create_environment_bookmarks(project_folder)
-
         self.bm.commit_changes()
 
     def build_insomnia_collection(self):
@@ -119,3 +116,9 @@ class Project:
         for environment in self.__environments:
             auths["erp"][environment.name] = environment.authorization.to_json()
         return InsomniaManager(self.__project_name, auths, swagger_url_trimmed)
+
+    def prepare_environment(self, generate_bookmarks=True, build_insomnia_collection=True):
+        if generate_bookmarks:
+            self.generate_bookmarks()
+        if build_insomnia_collection:
+            self.build_insomnia_collection()
