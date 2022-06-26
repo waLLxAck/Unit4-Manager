@@ -26,12 +26,20 @@ class BookmarkManager:
         return bookmark["children"]
 
     def get_unit4_folder(self):
-        return self.__search_bookmark(self.__get_root_level_bookmarks(), "Unit4",
-                                      self.BookmarkType.FOLDER)
+        folder_name = "Unit4"
+        unit4_folder = self.__search_bookmark(self.__get_root_level_bookmarks(), folder_name,
+                                              self.BookmarkType.FOLDER)
+        if not unit4_folder:
+            unit4_folder = self.create_folder(self.__get_root_level_bookmarks(), folder_name)
+        return unit4_folder
 
     def get_projects_folder(self):
-        return self.__search_bookmark(self.get_unit4_folder(), "Projects",
-                                      self.BookmarkType.FOLDER)
+        folder_name = "Projects"
+        projects_folder = self.__search_bookmark(self.get_unit4_folder(), folder_name,
+                                                 self.BookmarkType.FOLDER)
+        if not projects_folder:
+            projects_folder = self.create_folder(self.get_unit4_folder(), folder_name)
+        return projects_folder
 
     def create_folder(self, bookmark_folder_root, folder_name):
         if self.__search_bookmark(bookmark_folder_root, folder_name, self.BookmarkType.FOLDER):
