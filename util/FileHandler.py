@@ -9,6 +9,7 @@ from util import Helper
 class Paths:
     SETTINGS = "data/settings.json"
     NEW_IMPORTS = "data/new_bookmarks.json"
+    PROJECTS = "data/projects"
 
 
 
@@ -66,5 +67,5 @@ class FileHandler:
     def get_projects_files():
         project_files = []
         for file in os.listdir("data/projects"):
-            project_files.append(FileHandler.read_json(f"{Paths.PROJECTS}\\{file}"))
+            project_files.append(FileHandler.read_json(f"{Paths.PROJECTS}/{file}"))
         return project_files

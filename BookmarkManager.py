@@ -33,7 +33,7 @@ class BookmarkManager:
         return unit4_folder
 
     def get_projects_folder(self):
-        projects_path = self.file_handler.get_settings()["projects_path"]
+        projects_path = FILE_HANDLER.get_settings()["projects_path"]
         folder_name = ""
         root = self.__get_root_level_bookmarks()
         for folder in projects_path.split("/"):
