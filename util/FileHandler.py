@@ -5,8 +5,8 @@ from util import Utility
 
 
 class Paths:
-    SETTINGS = "data\\settings.json"
-    NEW_IMPORTS = "data\\new_bookmarks.json"
+    SETTINGS = "data/settings.json"
+    NEW_IMPORTS = "data/new_bookmarks.json"
 
 
 class FileHandler:

@@ -1,20 +1,21 @@
+from email.mime import application
 import os
 import platform
 import random
+import webbrowser
 import string
 from time import time
 
 time_now = int(time())
-app_data_path = "\\".join(os.getenv('APPDATA').split("\\")[:-1])
-
+osPlatform = platform.system()
+if osPlatform == 'Windows':
+    app_data_path = "\\".join(os.getenv('APPDATA').split("\\")[:-1])
 
 def generate_random_alphanumeric_string(number_of_characters):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=number_of_characters))
 
 
 def get_default_browser_bookmarks_path():
-    osPlatform = platform.system()
-
     if osPlatform == 'Windows':
         # Find the default browser by interrogating the registry
         from winreg import HKEY_CLASSES_ROOT, HKEY_CURRENT_USER, OpenKey, QueryValueEx
@@ -45,3 +46,12 @@ def get_default_browser_bookmarks_path():
 
             if bookmarks_path != app_data_path:
                 return bookmarks_path
+    elif osPlatform == 'Linux':
+        base_path = "/home/" + os.getenv("USER") + "/.config/"
+        bookmarks_path = base_path
+        default_browser = os.popen("xdg-mime query default x-scheme-handler/http").read().strip()
+        if default_browser == 'brave-browser.desktop':
+            bookmarks_path += 'BraveSoftware/Brave-Browser/Default/Bookmarks'
+        if bookmarks_path != base_path:
+            return bookmarks_path
+        
