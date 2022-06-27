@@ -1,7 +1,7 @@
 import uuid
 from time import time
 
-from util.FileHandler import FileHandler
+from util.Initializer import FILE_HANDLER
 
 
 class BookmarkManager:
@@ -10,8 +10,7 @@ class BookmarkManager:
         URL = "url"
 
     def __init__(self):
-        self.file_handler = FileHandler()
-        self.chrome_bookmarks = self.file_handler.get_bookmarks_chrome()
+        self.chrome_bookmarks = FILE_HANDLER.get_bookmarks_chrome()
 
     def __get_root_level_bookmarks(self):
         return self.chrome_bookmarks["roots"]["bookmark_bar"]
@@ -91,5 +90,5 @@ class BookmarkManager:
         print(f"URL '{bookmark_name}' created.")
 
     def commit_changes(self):
-        self.file_handler.save_changes(self.chrome_bookmarks)
+        FILE_HANDLER.save_changes(self.chrome_bookmarks)
         print("Bookmarks file updated.")

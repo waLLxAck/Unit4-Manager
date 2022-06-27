@@ -1,12 +1,15 @@
 import json
+import os
 import shutil
 
-from util import Utility
+import util.Initializer
+from util import Helper
 
 
 class Paths:
     SETTINGS = "data/settings.json"
     NEW_IMPORTS = "data/new_bookmarks.json"
+
 
 
 class FileHandler:
@@ -22,17 +25,15 @@ class FileHandler:
     def __read_file(file_path: str):
         return open(file_path).read()
 
-    def __read_json(self, path: str):
-        return self.__get_json(self.__read_file(path))
+    @staticmethod
+    def read_json(path: str):
+        return FileHandler.__get_json(FileHandler.__read_file(path))
 
     def get_settings(self):
-        return self.__read_json(self.paths.SETTINGS)
-
-    def get_new_imports(self):
-        return self.__read_json(self.paths.NEW_IMPORTS)
+        return self.read_json(self.paths.SETTINGS)
 
     def get_bookmarks_path(self):
-        path = Utility.get_default_browser_bookmarks_path()
+        path = Helper.get_default_browser_bookmarks_path()
         if not path:
             print("Default browser not found. Defaulting to bookmarks path provided in 'data/settings.json'.")
             path = self.get_settings()["bookmarks_path"]
@@ -41,9 +42,10 @@ class FileHandler:
         return path
 
     def get_bookmarks_chrome(self):
-        return self.__read_json(self.bookmarks_path)
+        return self.read_json(self.bookmarks_path)
 
-    def save_json_file(self, file_name, json_object):
+    @staticmethod
+    def save_json_file(file_name, json_object):
         file = open(file_name, "w")
         json.dump(json_object, file, indent=3)
 
@@ -57,5 +59,12 @@ class FileHandler:
 
     def get_browser_bookmarks_paths(self):   # todo make dynamic -> try to retrieve all Bookmarks in try, except and add to list
         paths = []
-        paths.append(f"{Utility.app_data_path}\\Local\\Google\\Chrome\\User Data\\Default\\Bookmarks")
+        paths.append(f"{util.Initializer.app_data_path}\\Local\\Google\\Chrome\\User Data\\Default\\Bookmarks")
         return paths
+
+    @staticmethod
+    def get_projects_files():
+        project_files = []
+        for file in os.listdir("data/projects"):
+            project_files.append(FileHandler.read_json(f"{Paths.PROJECTS}\\{file}"))
+        return project_files
