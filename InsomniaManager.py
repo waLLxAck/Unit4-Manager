@@ -1,16 +1,17 @@
 import datetime
 import json
 
-from util import Utility
-from util.FileHandler import FileHandler
+import util.Initializer
+from util import Helper
+from util.Initializer import FILE_HANDLER
 
 
 class InsomniaCollection:
     def __init__(self, name: str, description="", scope="collection", _type="workspace"):
-        self._id = f"wrk_{Utility.generate_random_alphanumeric_string(32)}"
+        self._id = f"wrk_{Helper.generate_random_alphanumeric_string(32)}"
         self.parentId = None
-        self.modified = Utility.time_now
-        self.created = Utility.time_now
+        self.modified = util.Initializer.time_now
+        self.created = util.Initializer.time_now
         self.name = name
         self.description = description
         self.scope = scope
@@ -27,7 +28,7 @@ class InsomniaCollection:
 class InsomniaGetMethod:
     class Parameter:
         def __init__(self, name, value, description=""):
-            self.id = f"pair_{Utility.generate_random_alphanumeric_string(32)}"
+            self.id = f"pair_{Helper.generate_random_alphanumeric_string(32)}"
             self.name = name
             self.value = value
             self.description = description
@@ -42,10 +43,10 @@ class InsomniaGetMethod:
         if choice is None:
             raise Exception("No authentication selected. Check your environments details.")
 
-        self._id = f"req_{Utility.generate_random_alphanumeric_string(32)}"
+        self._id = f"req_{Helper.generate_random_alphanumeric_string(32)}"
         self.parentId = insomnia_collection_id
-        self.modified = Utility.time_now
-        self.created = Utility.time_now
+        self.modified = util.Initializer.time_now
+        self.created = util.Initializer.time_now
         self.url = "{{ _.urls.swagger_api }}{% request 'name', '', 0 %}?companyId={{ _.authorization.erp." + choice[
             0] + ".company_id }}"
         self.name = "/v1/objects/attribute-values"
@@ -86,16 +87,16 @@ class InsomniaGetMethod:
 
 class InsomniaBaseEnvironment:
     def __init__(self, insomnia_collection_id, name):
-        self._id = f"env_{Utility.generate_random_alphanumeric_string(32)}"
+        self._id = f"env_{Helper.generate_random_alphanumeric_string(32)}"
         self.parentId = insomnia_collection_id
-        self.modified = Utility.time_now
-        self.created = Utility.time_now
+        self.modified = util.Initializer.time_now
+        self.created = util.Initializer.time_now
         self.name = name
         self.data = {}
         self.dataPropertyOrder = {}
         self.color = None
         self.isPrivate = False
-        self.metaSortKey = Utility.time_now
+        self.metaSortKey = util.Initializer.time_now
         self._type = "environment"
 
     @property
@@ -112,10 +113,10 @@ class InsomniaBaseEnvironment:
 
 class SubEnvironment:
     def __init__(self, insomnia_base_environment_id, name, swagger_api_url_trimmed, auths):
-        self._id = f"env_{Utility.generate_random_alphanumeric_string(32)}"
+        self._id = f"env_{Helper.generate_random_alphanumeric_string(32)}"
         self.parentId = insomnia_base_environment_id
-        self.modified = Utility.time_now
-        self.created = Utility.time_now
+        self.modified = util.Initializer.time_now
+        self.created = util.Initializer.time_now
         self.name = name
         self.data = {
             "urls": {
@@ -160,7 +161,7 @@ class SubEnvironment:
          }
         self.color = None
         self.isPrivate = False
-        self.metaSortKey = Utility.time_now
+        self.metaSortKey = util.Initializer.time_now
         self._type = "environment"
 
     @classmethod
@@ -173,10 +174,10 @@ class SubEnvironment:
 
 class DefaultCookieJar:
     def __init__(self, insomnia_base_environment_id, name="Default Jar"):
-        self._id = f"jar_{Utility.generate_random_alphanumeric_string(32)}"
+        self._id = f"jar_{Helper.generate_random_alphanumeric_string(32)}"
         self.parentId = insomnia_base_environment_id
-        self.modified = Utility.time_now
-        self.created = Utility.time_now
+        self.modified = util.Initializer.time_now
+        self.created = util.Initializer.time_now
         self.name = name
         self.cookies = []
         self._type = "cookie_jar"
@@ -191,10 +192,10 @@ class DefaultCookieJar:
 
 class APISpec:
     def __init__(self, insomnia_base_environment_id, project_name):
-        self._id = f"spc_{Utility.generate_random_alphanumeric_string(32)}"
+        self._id = f"spc_{Helper.generate_random_alphanumeric_string(32)}"
         self.parentId = insomnia_base_environment_id
-        self.modified = Utility.time_now
-        self.created = Utility.time_now
+        self.modified = util.Initializer.time_now
+        self.created = util.Initializer.time_now
         self.fileName = project_name
         self.contents = ""
         self.contentType = "yaml"
@@ -239,7 +240,7 @@ class InsomniaManager:
             "resources": self.resources
         }
 
-    def generate_insomnia_file(self):
-        file_name = f"Insomnia_{datetime.date.today()}.json"
-        FileHandler().save_json_file(file_name, self.to_json())
+    def generate_insomnia_file(self, project_name):
+        file_name = f"Insomnia_{project_name}_{datetime.date.today()}.json"
+        FILE_HANDLER.save_json_file(file_name, self.to_json())
         print(f"{file_name} was created in '/' directory.")

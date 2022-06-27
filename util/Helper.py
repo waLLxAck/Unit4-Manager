@@ -2,10 +2,6 @@ import os
 import platform
 import random
 import string
-from time import time
-
-time_now = int(time())
-app_data_path = "\\".join(os.getenv('APPDATA').split("\\")[:-1])
 
 
 def generate_random_alphanumeric_string(number_of_characters):
@@ -13,6 +9,7 @@ def generate_random_alphanumeric_string(number_of_characters):
 
 
 def get_default_browser_bookmarks_path():
+    app_data_path = "\\".join(os.getenv('APPDATA').split("\\")[:-1])
     osPlatform = platform.system()
 
     if osPlatform == 'Windows':

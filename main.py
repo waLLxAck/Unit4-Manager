@@ -1,16 +1,16 @@
 from Project import Project
 from model.Settings import Settings
-from util.FileHandler import FileHandler
+from util.Initializer import FILE_HANDLER
 
 
 def run():
-    fh = FileHandler()
-    settings = Settings.from_json(fh.get_settings())
-    for project_json in fh.get_new_imports():
-        project = Project.from_json(project_json)
-        project.prepare_environment()
+    settings = Settings.from_json(FILE_HANDLER.get_settings())
+    project_files = FILE_HANDLER.get_projects_files()
+    for project_file in project_files:
+        project = Project.from_json(project_file)
+        project.prepare_environment()   # todo add 'other' websites option
         if settings.distribute_bookmarks_between_browsers:
-            FileHandler().distribute_bookmarks_from_default_to_other_browsers()
+            FILE_HANDLER.distribute_bookmarks_from_default_to_other_browsers()
 
 
 if __name__ == '__main__':
