@@ -5,19 +5,16 @@ import random
 import webbrowser
 import string
 from time import time
-
-time_now = int(time())
-osPlatform = platform.system()
-if osPlatform == 'Windows':
-    app_data_path = "\\".join(os.getenv('APPDATA').split("\\")[:-1])
-
+    
 
 def generate_random_alphanumeric_string(number_of_characters):
     return ''.join(random.choices(string.ascii_letters + string.digits, k=number_of_characters))
 
 
 def get_default_browser_bookmarks_path():
+    osPlatform = platform.system()
     if osPlatform == 'Windows':
+        app_data_path = "\\".join(os.getenv('APPDATA').split("\\")[:-1])
         # Find the default browser by interrogating the registry
         from winreg import HKEY_CLASSES_ROOT, HKEY_CURRENT_USER, OpenKey, QueryValueEx
 
