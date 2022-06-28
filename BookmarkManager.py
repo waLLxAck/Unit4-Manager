@@ -33,12 +33,20 @@ class BookmarkManager:
         return unit4_folder
 
     def get_projects_folder(self):
-        folder_name = "Projects"
-        projects_folder = self.__search_bookmark(self.get_unit4_folder(), folder_name,
-                                                 self.BookmarkType.FOLDER)
-        if not projects_folder:
-            projects_folder = self.create_folder(self.get_unit4_folder(), folder_name)
-        return projects_folder
+        projects_path = FILE_HANDLER.get_settings()["projects_path"]
+        folder_name = ""
+        root = self.__get_root_level_bookmarks()
+        for folder in projects_path.split("/"):
+            folder_name = folder
+            root = self.get_folder(root, folder_name)
+        return root
+
+    def get_folder(self, root, folder_name):
+        folder = self.__search_bookmark(root, folder_name,
+                                              self.BookmarkType.FOLDER)
+        if not folder:
+            folder = self.create_folder(root, folder_name)
+        return folder
 
     def create_folder(self, bookmark_folder_root, folder_name):
         if self.__search_bookmark(bookmark_folder_root, folder_name, self.BookmarkType.FOLDER):
