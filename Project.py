@@ -9,19 +9,18 @@ class StandardFileNames:
         self.swagger_base = "SwaggerUI"
         self.extension_kit_base = "Extension Kit"
         self.erp_lab_base = "ERP Lab"
-        pass
 
     def get_swagger_name(self, project_short_name, project_full_name):
         return f"{project_short_name} - {project_full_name} - {self.swagger_base} - Unit4"
 
     def get_extension_kit_name(self, project_short_name, project_full_name, environment):
-        return f"{project_short_name} - {project_full_name} - {self.extension_kit_base} - {environment} - Unit4"
+        return f"{project_short_name} - {project_full_name} - {self.extension_kit_base} - {environment.upper()} - Unit4"
 
     def get_erp_lab_name(self, project_short_name, project_full_name, environment):
-        return f"{project_short_name} - {project_full_name} - {self.erp_lab_base} - {environment} - Unit4"
+        return f"{project_short_name} - {project_full_name} - {self.erp_lab_base} - {environment.upper()} - Unit4"
 
     def get_swagger_environment_name(self, project_short_name, project_full_name, environment):
-        return f"{project_short_name} - {project_full_name} - {self.swagger_base} - {environment} - Unit4"
+        return f"{project_short_name} - {project_full_name} - {self.swagger_base} - {environment.upper()} - Unit4"
 
 
 class Auth:
@@ -50,13 +49,6 @@ class Environment:
     @classmethod
     def from_json(cls, json_object):
         return cls(**json_object)
-
-    def get_name(self):
-        if not self.erp_lab:
-            if not self.extension_kit:
-                raise Exception("Cannot retrieve Environment name.")
-            return self.extension_kit.split("/")[-1].split("-")[-1].upper()
-        return self.erp_lab.split("/")[-1].split("_")[-1].upper()
 
 
 class Project:
