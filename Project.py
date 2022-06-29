@@ -20,6 +20,9 @@ class StandardFileNames:
     def get_erp_lab_name(self, project_short_name, project_full_name, environment):
         return f"{project_short_name} - {project_full_name} - {self.erp_lab_base} - {environment} - Unit4"
 
+    def get_swagger_environment_name(self, project_short_name, project_full_name, environment):
+        return f"{project_short_name} - {project_full_name} - {self.swagger_base} - {environment} - Unit4"
+
 
 class Auth:
     def __init__(self, company_id, access_token_url, client_id, client_secret, **kwargs):
@@ -37,10 +40,11 @@ class Auth:
 
 
 class Environment:
-    def __init__(self, name, extension_kit, erp_lab, authorization, **kwargs):
+    def __init__(self, name, extension_kit, erp_lab, authorization, swagger_api, **kwargs):
         self.name = name
         self.extension_kit: str = extension_kit
         self.erp_lab: str = erp_lab
+        self.swagger_api: str = swagger_api
         self.authorization = Auth(**authorization)
 
     @classmethod
@@ -88,22 +92,26 @@ class Project:
     def __create_environment_bookmarks(self, project_folder):
         for environment in self.__environments:
             if environment.extension_kit:
-                environment_name = environment.get_name()
                 bookmark_name = self.names.get_extension_kit_name(project_short_name=self.__project_short_name,
                                                                   project_full_name=self.__project_name,
-                                                                  environment=environment_name)
+                                                                  environment=environment.name)
                 self.bm.create_url(project_folder, bookmark_name, environment.extension_kit)
             if environment.erp_lab:
-                environment_name = environment.get_name()
                 bookmark_name = self.names.get_erp_lab_name(project_short_name=self.__project_short_name,
                                                             project_full_name=self.__project_name,
-                                                            environment=environment_name)
+                                                            environment=environment.name)
+                self.bm.create_url(project_folder, bookmark_name, environment.erp_lab)
+            if environment.swagger_api:
+                bookmark_name = self.names.get_swagger_environment_name(project_short_name=self.__project_short_name,
+                                                                        project_full_name=self.__project_name,
+                                                                        environment=environment.name)
                 self.bm.create_url(project_folder, bookmark_name, environment.erp_lab)
 
     def generate_bookmarks(self):
         unit4_projects_folder = self.bm.get_projects_folder()
         project_folder = self.bm.create_folder(unit4_projects_folder, self.__project_name)
-        self.__create_swagger_bookmark(project_folder)
+        if self.__swagger_api:
+            self.__create_swagger_bookmark(project_folder)
         self.__create_environment_bookmarks(project_folder)
         self.bm.commit_changes()
 
