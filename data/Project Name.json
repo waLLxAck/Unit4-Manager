@@ -1,6 +1,12 @@
 {
   "project_name": "",
   "swagger_api": "",
+  "urls": [
+    {
+      "name": "",
+      "url": ""
+    }
+  ],
   "environments": [
     {
       "name": "prev",
