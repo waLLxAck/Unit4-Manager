@@ -1,4 +1,4 @@
-from Project import Project
+from model.Project import Project
 from model.Settings import Settings
 from util.Initializer import FILE_HANDLER
 
@@ -8,9 +8,10 @@ def run():
     project_files = FILE_HANDLER.get_projects_files()
     for project_file in project_files:
         project = Project.from_json(project_file)
-        project.prepare_environment()   # todo add 'other' websites option
-        if settings.distribute_bookmarks_between_browsers:
-            FILE_HANDLER.distribute_bookmarks_from_default_to_other_browsers()
+        project.prepare_environment()
+    print("Bookmarks file updated.")
+    if settings.distribute_bookmarks_between_browsers:
+        FILE_HANDLER.distribute_bookmarks_from_default_to_other_browsers()
 
 
 if __name__ == '__main__':

@@ -1,11 +1,18 @@
 {
   "project_name": "",
   "swagger_api": "",
+  "urls": [
+    {
+      "name": "",
+      "url": ""
+    }
+  ],
   "environments": [
     {
       "name": "prev",
       "extension_kit": "",
       "erp_lab": "",
+      "swagger_api": "",
       "authorization": {
         "company_id": "",
         "access_token_url": "",
@@ -17,6 +24,7 @@
       "name": "acpt",
       "extension_kit": "",
       "erp_lab": "",
+      "swagger_api": "",
       "authorization": {
         "company_id": "",
         "access_token_url": "",
@@ -28,6 +36,7 @@
       "name": "prod",
       "extension_kit": "",
       "erp_lab": "",
+      "swagger_api": "",
       "authorization": {
         "company_id": "",
         "access_token_url": "",

@@ -91,4 +91,3 @@ class BookmarkManager:
 
     def commit_changes(self):
         FILE_HANDLER.save_changes(self.chrome_bookmarks)
-        print("Bookmarks file updated.")
