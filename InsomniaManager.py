@@ -3,6 +3,7 @@ import json
 
 import util.Initializer
 from util import Helper
+from util.FileHandler import Paths
 from util.Initializer import FILE_HANDLER
 
 
@@ -241,6 +242,7 @@ class InsomniaManager:
         }
 
     def generate_insomnia_file(self, project_name):
+        paths = Paths()
         file_name = f"Insomnia_{project_name}_{datetime.date.today()}.json"
-        FILE_HANDLER.save_json_file(f"data/insomnia_collections/{file_name}", self.to_json())
-        print(f"File '{file_name}' was created in 'data/insomnia_collections'.")
+        FILE_HANDLER.save_json_file(f"{paths.INSOMNIA_COLLECTIONS}/{file_name}", self.to_json())
+        print(f"File '{file_name}' was created in '{paths.INSOMNIA_COLLECTIONS}'.")
