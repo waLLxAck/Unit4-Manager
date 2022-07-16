@@ -1,35 +1,10 @@
 import json
 import os
 import shutil
-from pathlib import Path
 
 import util.Initializer
-from util import Helper
-
-
-class Paths:
-    def __init__(self):
-        self.ROOT = self.get_project_root()
-        self.SETTINGS = self.get_settings()
-        self.NEW_IMPORTS = self.get_new_imports()
-        self.PROJECTS = self.get_projects()
-        self.INSOMNIA_COLLECTIONS = self.get_insomnia_collections()
-
-    @staticmethod
-    def get_project_root():
-        return str(Path(__file__).parent.parent)
-
-    def get_settings(self):
-        return self.ROOT + "/data/settings.json"
-
-    def get_new_imports(self):
-        return self.ROOT + "/data/new_bookmarks.json"
-
-    def get_projects(self):
-        return self.ROOT + "/data/projects"
-
-    def get_insomnia_collections(self):
-        return self.ROOT + "/data/insomnia_collections"
+import util.Paths
+from util.Paths import Paths
 
 
 class FileHandler:
@@ -53,7 +28,7 @@ class FileHandler:
         return self.read_json(self.paths.SETTINGS)
 
     def get_bookmarks_path(self):
-        path = Helper.get_default_browser_bookmarks_path()
+        path = util.Paths.get_default_browser_bookmarks_path()
         if not path:
             print("Default browser not found. Defaulting to bookmarks path provided in 'data/settings.json'.")
             path = self.get_settings()["bookmarks_path"]
@@ -78,7 +53,8 @@ class FileHandler:
             shutil.copy2(self.bookmarks_path, bookmark_path)
             print(f"Bookmarks copied from '{self.bookmarks_path}' to '{bookmark_path}'.")
 
-    def get_browser_bookmarks_paths(self):  # todo make dynamic -> try to retrieve all Bookmarks in try, except and add to list
+    def get_browser_bookmarks_paths(
+            self):  # todo make dynamic -> try to retrieve all Bookmarks in try, except and add to list
         paths = [f"{util.Initializer.app_data_path}\\Local\\Google\\Chrome\\User Data\\Default\\Bookmarks"]
         return paths
 

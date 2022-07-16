@@ -3,7 +3,7 @@ import json
 
 import util.Initializer
 from util import Helper
-from util.FileHandler import Paths
+from util.Paths import Paths
 from util.Initializer import FILE_HANDLER
 
 
