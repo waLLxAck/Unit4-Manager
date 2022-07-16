@@ -130,8 +130,8 @@ class Project:
         self.__create_project_bookmarks(project_folder)
         self.bm.commit_changes()
 
-    def build_insomnia_collection(self, project_name):
-        self.im.generate_insomnia_file(project_name)
+    def build_insomnia_collection(self):
+        self.im.generate_insomnia_file(self.__project_name)
 
     def build_insomnia_manager(self):
         swagger_url_trimmed = self.__swagger_api.split("/swagger")[0]
@@ -144,4 +144,4 @@ class Project:
         if generate_bookmarks:
             self.generate_bookmarks()
         if build_insomnia_collection:
-            self.build_insomnia_collection(self.__project_name)
+            self.build_insomnia_collection()
