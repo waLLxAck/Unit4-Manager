@@ -13,6 +13,7 @@ class Paths:
         self.SETTINGS = self.get_settings()
         self.NEW_IMPORTS = self.get_new_imports()
         self.PROJECTS = self.get_projects()
+        self.INSOMNIA_COLLECTIONS = self.get_insomnia_collections()
 
     @staticmethod
     def get_project_root():
@@ -26,6 +27,9 @@ class Paths:
 
     def get_projects(self):
         return self.ROOT + "/data/projects"
+
+    def get_insomnia_collections(self):
+        return self.ROOT + "/data/insomnia_collections"
 
 
 class FileHandler:
