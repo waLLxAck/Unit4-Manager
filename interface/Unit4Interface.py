@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QVBoxLayout
 
-from interface.Unit4InterfaceConnector import EnvironmentManagementMenu, Tools
+from Unit4InterfaceConnector import EnvironmentManagementMenu, Tools
 
 
 class UI(QtWidgets.QWidget):
@@ -109,12 +109,15 @@ class UI(QtWidgets.QWidget):
             "Reference;0-Invoice No;IATA No;VAT Rate;Fee Tag;Service code;Domestic Tag;Due Date;Additional "
             "Insurance;Service line1;Service line2;Service line3;Fees (Tax);A.I.D.A. Number;VAT Type")
         text_box2 = self.__new_text_box("CurrentItem")
-        self.tools = Tools(text_box1, text_box2)
+        text_box3 = self.__new_text_box(";")
+        self.tools = Tools(text_box1, text_box2, text_box3)
         widgets = [
             self.__new_label("Header string"),
             text_box1,
             self.__new_label("Variable that holds the header string"),
             text_box2,
+            self.__new_label("Delimiter"),
+            text_box3,
             self.__new_button("Convert",
                               self.tools.convert_csv_header_to_liquid_variables)
         ]
