@@ -46,10 +46,12 @@ class EnvironmentManagementMenu:
 
 
 class Tools:
-    def __init__(self, txt_header, txt_row_variable):
+    def __init__(self, txt_header, txt_row_variable, txt_delimiter):
         self.txt_header = txt_header
         self.txt_row_variable = txt_row_variable
+        self.txt_delimiter = txt_delimiter
 
     def convert_csv_header_to_liquid_variables(self):
         from development_tool.csv_header_into_liquid_variables import convert_header
-        convert_header(self.txt_header.toPlainText(), self.txt_row_variable.toPlainText())
+        convert_header(self.txt_header.toPlainText(), self.txt_row_variable.toPlainText(),
+                       self.txt_delimiter.toPlainText())
