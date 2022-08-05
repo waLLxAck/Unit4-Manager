@@ -55,3 +55,16 @@ class Tools:
         from development_tool.csv_header_into_liquid_variables import convert_header
         convert_header(self.txt_header.toPlainText(), self.txt_row_variable.toPlainText(),
                        self.txt_delimiter.toPlainText())
+
+
+class ProjectEntryScreen:
+    def __init__(self, project_name, swagger_api, urls, environments):
+        self.project_name = project_name
+        self.swagger_api = swagger_api
+        self.urls = urls
+        self.environments = environments
+
+    def save_new_project_entry(self):
+        project = Project(self.project_name, self.swagger_api, self.urls, self.environments)
+        FILE_HANDLER.save_json_file(project.to_json(), project.get_project_name())
+        print("Project saved.")

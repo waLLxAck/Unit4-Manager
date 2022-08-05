@@ -1,5 +1,5 @@
 {
   "bookmarks_path": "",
-  "distribute_bookmarks_between_browsers": false,
+  "distribute_bookmarks_between_browsers": true,
   "projects_path":"Unit4/Projects"
 }

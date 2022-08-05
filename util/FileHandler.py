@@ -65,3 +65,12 @@ class FileHandler:
         for file in os.listdir(paths.PROJECTS):
             project_files.append(FileHandler.read_json(f"{paths.PROJECTS}/{file}"))
         return project_files
+
+    def has_changes(self, chrome_bookmarks):
+        # get the bookmarks file from the default browser
+        default_bookmarks = self.get_bookmarks_chrome()
+        # check if the bookmarks file has changes
+        if default_bookmarks != chrome_bookmarks:
+            return True
+        else:
+            return False

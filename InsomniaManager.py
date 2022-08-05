@@ -40,9 +40,10 @@ class InsomniaGetMethod:
     def __init__(self, insomnia_collection_id, auths, description="", **kwargs):
         choice = None
         for auth in auths["erp"].keys():
-            choice = (auth, auths["erp"][auth])
+            if auths["erp"][auth]["company_id"]:
+                choice = (auth, auths["erp"][auth])
         if choice is None:
-            raise Exception("No authentication selected. Check your environments details.")
+            raise Exception("No authentication provided. Check your environments details.")
 
         self._id = f"req_{Helper.generate_random_alphanumeric_string(32)}"
         self.parentId = insomnia_collection_id

@@ -84,6 +84,12 @@ class Project:
     def from_json(cls, json_object):
         return cls(**json_object)
 
+    def to_json(self):
+        return json.loads(json.dumps(self.__dict__))
+
+    def get_project_name(self):
+        return self.__project_name
+
     def get_project_short_name(self):
         for environment in self.__environments:
             if not environment.erp_lab:
@@ -125,10 +131,14 @@ class Project:
                 self.bm.create_url(project_folder, bookmark_name, url.url)
 
     def generate_bookmarks(self):
+        # ensure bookmarks file is updated with latest project information
+        self.bm.update_bookmarks()
         unit4_projects_folder = self.bm.get_projects_folder()
         project_folder = self.bm.create_folder(unit4_projects_folder, self.__project_name)
         self.__create_project_bookmarks(project_folder)
-        self.bm.commit_changes()
+        # only commit if there are changes in the bookmarks
+        if self.bm.has_changes():
+            self.bm.commit_changes()
 
     def build_insomnia_collection(self):
         self.im.generate_insomnia_file(self.__project_name)
