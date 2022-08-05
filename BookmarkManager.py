@@ -91,3 +91,6 @@ class BookmarkManager:
 
     def commit_changes(self):
         FILE_HANDLER.save_changes(self.chrome_bookmarks)
+
+    def update_bookmarks(self):
+        self.chrome_bookmarks = FILE_HANDLER.get_bookmarks_chrome()

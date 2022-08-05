@@ -125,6 +125,7 @@ class Project:
                 self.bm.create_url(project_folder, bookmark_name, url.url)
 
     def generate_bookmarks(self):
+        self.bm.update_bookmarks()
         unit4_projects_folder = self.bm.get_projects_folder()
         project_folder = self.bm.create_folder(unit4_projects_folder, self.__project_name)
         self.__create_project_bookmarks(project_folder)
