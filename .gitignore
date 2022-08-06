@@ -1,2 +1,5 @@
 data/insomnia_collections
 data/projects
+*.spec
+build
+dist
