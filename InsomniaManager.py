@@ -3,6 +3,7 @@ import json
 
 import util.Initializer
 from util import Helper
+from util.FileHandler import Paths
 from util.Initializer import FILE_HANDLER
 
 
@@ -39,16 +40,17 @@ class InsomniaGetMethod:
     def __init__(self, insomnia_collection_id, auths, description="", **kwargs):
         choice = None
         for auth in auths["erp"].keys():
-            choice = (auth, auths["erp"][auth])
+            if auths["erp"][auth]["company_id"]:
+                choice = auth
+                break
         if choice is None:
-            raise Exception("No authentication selected. Check your environments details.")
+            print("No company_id found in auths. No authentication selected. Check your environments details.")
 
         self._id = f"req_{Helper.generate_random_alphanumeric_string(32)}"
         self.parentId = insomnia_collection_id
         self.modified = util.Initializer.time_now
         self.created = util.Initializer.time_now
-        self.url = "{{ _.urls.swagger_api }}{% request 'name', '', 0 %}?companyId={{ _.authorization.erp." + choice[
-            0] + ".company_id }}"
+        self.url = "{{ _.urls.swagger_api }}{% request 'name', '', 0 %}?companyId={{ _.authorization.erp." + auth + ".company_id }}"
         self.name = "/v1/objects/attribute-values"
         self.description = description
         self.method = "GET"
@@ -59,9 +61,9 @@ class InsomniaGetMethod:
         self.authentication = {
             "type": "oauth2",
             "grantType": "client_credentials",
-            "accessTokenUrl": "{{ _.authorization.erp." + choice[0] + ".access_token_url }}",
-            "clientId": "{{ _.authorization.erp." + choice[0] + ".client_id }}",
-            "clientSecret": "{{ _.authorization.erp." + choice[0] + ".client_secret }}"
+            "accessTokenUrl": "{{ _.authorization.erp." + auth + ".access_token_url }}",
+            "clientId": "{{ _.authorization.erp." + auth + ".client_id }}",
+            "clientSecret": "{{ _.authorization.erp." + auth + ".client_secret }}"
         }
         self.metaSortKey = -1
         self.isPrivate = False
@@ -125,40 +127,40 @@ class SubEnvironment:
             "authorization": auths
         }
         self.dataPropertyOrder = {
-             "&": [
-                 "urls",
-                 "authorization"
-             ],
-             "&~|urls": [
-                 "swagger_api"
-             ],
-             "&~|authorization": [
-                 "erp"
-             ],
-             "&~|authorization~|erp": [
-                 "prev",
-                 "acpt",
-                 "prod"
-             ],
-             "&~|authorization~|erp~|prev": [
-                 "company_id",
-                 "access_token_url",
-                 "client_id",
-                 "client_secret"
-             ],
-             "&~|authorization~|erp~|acpt": [
-                 "company_id",
-                 "access_token_url",
-                 "client_id",
-                 "client_secret"
-             ],
-             "&~|authorization~|erp~|prod": [
-                 "company_id",
-                 "access_token_url",
-                 "client_id",
-                 "client_secret"
-             ]
-         }
+            "&": [
+                "urls",
+                "authorization"
+            ],
+            "&~|urls": [
+                "swagger_api"
+            ],
+            "&~|authorization": [
+                "erp"
+            ],
+            "&~|authorization~|erp": [
+                "prev",
+                "acpt",
+                "prod"
+            ],
+            "&~|authorization~|erp~|prev": [
+                "company_id",
+                "access_token_url",
+                "client_id",
+                "client_secret"
+            ],
+            "&~|authorization~|erp~|acpt": [
+                "company_id",
+                "access_token_url",
+                "client_id",
+                "client_secret"
+            ],
+            "&~|authorization~|erp~|prod": [
+                "company_id",
+                "access_token_url",
+                "client_id",
+                "client_secret"
+            ]
+        }
         self.color = None
         self.isPrivate = False
         self.metaSortKey = util.Initializer.time_now
@@ -242,5 +244,5 @@ class InsomniaManager:
 
     def generate_insomnia_file(self, project_name):
         file_name = f"Insomnia_{project_name}_{datetime.date.today()}.json"
-        FILE_HANDLER.save_json_file(f"data/insomnia_collections/{file_name}", self.to_json())
+        FILE_HANDLER.save_json_file(f"{Paths.INSOMNIA_COLLECTIONS}/{file_name}", self.to_json())
         print(f"File '{file_name}' was created in 'data/insomnia_collections'.")
