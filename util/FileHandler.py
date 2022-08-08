@@ -7,10 +7,9 @@ from util import Helper
 
 
 class Paths:
-    SETTINGS = "data/settings.json"
-    NEW_IMPORTS = "data/new_bookmarks.json"
-    PROJECTS = "data/projects"
-
+    INSOMNIA_COLLECTIONS = "insomnia_collections"
+    SETTINGS = "settings.json"
+    PROJECTS = "projects"
 
 
 class FileHandler:
@@ -39,7 +38,7 @@ class FileHandler:
             print("Default browser not found. Defaulting to bookmarks path provided in 'data/settings.json'.")
             path = self.get_settings()["bookmarks_path"]
             if not path:
-                raise Exception("Please provide a path in 'data/settings.json' to your 'Bookmarks' file. Field: bookmarks_path.")
+                raise Exception("Missing field: bookmarks_path. Please provide a path in 'settings.json' to your 'Bookmarks' file.")
         return path
 
     def get_bookmarks_chrome(self):
@@ -58,14 +57,31 @@ class FileHandler:
             shutil.copy2(self.bookmarks_path, bookmark_path)
             print(f"Bookmarks copied from '{self.bookmarks_path}' to '{bookmark_path}'.")
 
-    def get_browser_bookmarks_paths(self):   # todo make dynamic -> try to retrieve all Bookmarks in try, except and add to list
-        paths = []
-        paths.append(f"{util.Initializer.app_data_path}\\Local\\Google\\Chrome\\User Data\\Default\\Bookmarks")
+    def get_browser_bookmarks_paths(self):
+        # todo retrieve all bookmark files??
+        paths = [f"{util.Initializer.app_data_path}\\Local\\Google\\Chrome\\User Data\\Default\\Bookmarks"]
         return paths
 
     @staticmethod
     def get_projects_files():
         project_files = []
-        for file in os.listdir("data/projects"):
+        for file in os.listdir(Paths.PROJECTS):
             project_files.append(FileHandler.read_json(f"{Paths.PROJECTS}/{file}"))
         return project_files
+
+    @staticmethod
+    def create_folders_if_not_exists():
+        for folder in [Paths.INSOMNIA_COLLECTIONS, Paths.PROJECTS]:
+            if not os.path.exists(folder):
+                os.makedirs(folder)
+                print(f"Folder '{folder}' created.")
+
+    @staticmethod
+    def create_settings_file_if_not_exists():
+        if not os.path.exists(Paths.SETTINGS):
+            FileHandler.save_json_file(Paths.SETTINGS, {
+                "bookmarks_path": "",
+                "distribute_bookmarks_between_browsers": True,
+                "projects_path": "Unit4/Projects"
+            })
+            print("Settings file created.")
