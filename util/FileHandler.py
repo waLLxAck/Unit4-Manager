@@ -15,6 +15,8 @@ class Paths:
 class FileHandler:
     def __init__(self):
         self.paths = Paths()
+        self.create_folders_if_not_exists()
+        self.create_settings_file_if_not_exists()
         self.bookmarks_path = self.get_bookmarks_path()
 
     @staticmethod
