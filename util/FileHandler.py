@@ -9,7 +9,7 @@ from util import Helper
 class Paths:
     INSOMNIA_COLLECTIONS = "insomnia_collections"
     SETTINGS = "settings.json"
-    PROJECTS = "projects"
+    PROJECTS = "data/projects"
 
 
 class FileHandler:
@@ -23,7 +23,8 @@ class FileHandler:
 
     @staticmethod
     def __read_file(file_path: str):
-        return open(file_path).read()
+        with open(file_path, encoding='utf-8') as file:
+            return file.read()
 
     @staticmethod
     def read_json(path: str):
