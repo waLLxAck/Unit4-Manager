@@ -38,10 +38,11 @@ def get_default_browser_bookmarks_path():
                 bookmarks_path += "\\Roaming\\Opera Software\\Opera Stable\\Bookmarks"
             elif "Internet Explorer" in browser_path:
                 raise Exception(
-                    "Internet Explorer not supported. Consider upgrading your browser. (Supported Browsers: Opera, Chrome, Edge)")
+                    "Internet Explorer not supported. Consider upgrading your browser. (Supported Browsers: Opera, Chrome, Edge, Brave)")
             elif "Edge" in browser_path:
                 bookmarks_path += "\\Local\\Microsoft\\Edge\\User Data\\Default\\Bookmarks"
-
+            elif "Brave" in browser_path:
+                bookmarks_path += "\\Local\\BraveSoftware\\Brave-Browser\\User Data\\Default\\Bookmarks"
             if bookmarks_path != app_data_path:
                 return bookmarks_path
     elif osPlatform == 'Linux':

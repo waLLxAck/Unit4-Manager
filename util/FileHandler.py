@@ -41,7 +41,8 @@ class FileHandler:
             print("Default browser not found. Defaulting to bookmarks path provided in 'data/settings.json'.")
             path = self.get_settings()["bookmarks_path"]
             if not path:
-                raise Exception("Missing field: bookmarks_path. Please provide a path in 'settings.json' to your 'Bookmarks' file.")
+                raise Exception("Missing field: bookmarks_path. Please provide a path in 'settings.json' to your 'Bookmarks' file.\n"
+                                "e.g. 'C:\\Users\\<username>\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\Bookmarks'")
         return path
 
     def get_bookmarks_chrome(self):
